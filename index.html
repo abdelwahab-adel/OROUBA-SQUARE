@@ -3167,7 +3167,7 @@ const Header = (() => {
   Utils.on(window, 'scroll', update, { passive: true });
   update();
 
-  Utils.on(fabTop, 'click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  if (fabTop) Utils.on(fabTop, 'click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
 
   return { update };
 })();
@@ -3332,6 +3332,28 @@ const ServicesGrid = (() => {
       </div>
     </article>
   `).join('');
+
+  // Observe newly injected cards for reveal animation
+  const svcCards = Utils.$$('.svc-card[data-reveal]', grid);
+  if ('IntersectionObserver' in window) {
+    const svcIo = new IntersectionObserver((entries) => {
+      entries.forEach(en => {
+        if (en.isIntersecting) { en.target.classList.add('is-visible'); svcIo.unobserve(en.target); }
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
+    svcCards.forEach(el => svcIo.observe(el));
+  } else {
+    svcCards.forEach(el => el.classList.add('is-visible'));
+  }
+
+  // Re-run image fallback handler for newly added images
+  grid.querySelectorAll('img[data-fallback]').forEach(img => {
+    img.addEventListener('error', function handleError() {
+      const fb = this.getAttribute('data-fallback');
+      if (fb && this.src !== fb) this.src = fb;
+    }, { once: true });
+  });
+
   Utils.$$('.svc-card').forEach(c => Utils.on(c, 'click', () => openSrv(c.dataset.service)));
 })();
 
@@ -3367,7 +3389,7 @@ function openSrv(key) {
    ════════════════════════════════════════════════ */
 const FacilitiesSlider = (() => {
   const el = Utils.$('#facsl');
-  function scrollDir(d) { el.scrollBy({ left: 320 * (d === 'r' ? 1 : -1), behavior: 'smooth' }); }
+  function scrollDir(d) { el.scrollBy({ left: 320 * (d === 'r' ? -1 : 1), behavior: 'smooth' }); }
   Utils.on(Utils.$('#sl-r'), 'click', () => scrollDir('r'));
   Utils.on(Utils.$('#sl-l'), 'click', () => scrollDir('l'));
   Utils.on(Utils.$('#sl-rm'), 'click', () => scrollDir('r'));
@@ -3591,7 +3613,7 @@ const Testimonials = (() => {
   function update() {
     const card = cards[0];
     const w = card.offsetWidth + 24;
-    track.style.transform = `translateX(${idx * w}px)`;
+    track.style.transform = `translateX(${idx * w * -1}px)`;
     Utils.$$('.testimonials__dot', dotsEl).forEach((d, i) => d.classList.toggle('is-active', i === idx));
   }
   function buildDots() {
