@@ -328,8 +328,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
 .topbar {
   width: 100%;
   background: linear-gradient(90deg, #021f18 0%, #043A2E 40%, #065B48 70%, #043A2E 100%);
-  color: #fff;
-  padding: 8px var(--s-6); font-size: 12px;
+  color: #fff; padding: 8px var(--s-6); font-size: 12px;
   display: flex; justify-content: space-between; align-items: center;
   flex-wrap: wrap; gap: 8px; position: relative; z-index: 50;
   border-bottom: 1px solid rgba(255,255,255,0.07);
@@ -459,7 +458,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
 @media (min-width: 1280px) { .hero { min-height: 880px; } }
 .hero__bg { position: absolute; inset: 0; z-index: 0; overflow: hidden; }
 .hero__bg img { width: 100%; height: 100%; object-fit: cover; opacity: 0.85; animation: zoomBg 50s infinite alternate ease-in-out; will-change: transform; }
-.hero__overlay { position: absolute; inset: 0; z-index: 1; background: var(--g-hero); }
+.hero__overlay { position: absolute; inset: 0; z-index: 1; background: rgba(255, 255, 255, 0.2); }
 .hero__shapes { position: absolute; inset: 0; z-index: 2; pointer-events: none; overflow: hidden; }
 .hero__shape { position: absolute; border-radius: 50%; opacity: 0.18; animation: floatShape 14s infinite ease-in-out; }
 .hero__shape--1 { width: 320px; height: 320px; background: var(--c-gold); top: -120px; right: -80px; }
@@ -854,7 +853,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
   .lifestyle-item:nth-child(5) { grid-column: span 2; }
   .lifestyle-item:nth-child(6) { grid-column: span 2; }
 }
-.lifestyle-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease-out); cursor: zoom-in; }
+.lifestyle-item img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s var(--ease-out); }
 .lifestyle-item:hover img { transform: scale(1.08); }
 .lifestyle-item__overlay {
   position: absolute; inset: 0;
@@ -1323,6 +1322,20 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
 .unit-card__body { max-height: 0; overflow: hidden; transition: max-height 0.4s var(--ease-out); }
 .unit-card.is-open .unit-card__body { max-height: 1200px; }
 .unit-card__body-inner { padding: 0 22px 22px; border-top: 1px solid var(--c-border); background: rgba(244, 239, 227, 0.4); }
+
+/* Unit image inside card */
+.unit-card__unit-img {
+  width: 100%; height: 220px; overflow: hidden;
+  border-radius: var(--r-lg); margin-top: 18px; margin-bottom: 18px;
+  position: relative;
+}
+.unit-card__unit-img img {
+  width: 100%; height: 100%; object-fit: cover;
+  transition: transform 0.6s var(--ease-out);
+  border-radius: var(--r-lg);
+}
+.unit-card.is-open .unit-card__unit-img img:hover { transform: scale(1.04); }
+@media (min-width: 768px) { .unit-card__unit-img { height: 260px; } }
 .unit-card__detail-grid { display: grid; grid-template-columns: 1fr; gap: 28px; text-align: right; padding-top: 18px; }
 @media (min-width: 768px) { .unit-card__detail-grid { grid-template-columns: 1fr 1fr; } }
 .unit-card__section-title { font-weight: 800; font-size: 13px; color: var(--c-text); border-right: 3px solid var(--c-primary); padding-right: 10px; margin-bottom: 14px; }
@@ -1579,224 +1592,40 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
 .text-center { text-align: center; }
 
 /* ════ INFO TICKER ════ */
-.info-ticker {
-  background: var(--c-primary);
-  color: #fff;
-  padding: 0;
-  height: 40px;
-  overflow: hidden;
-  position: relative;
-  z-index: 39;
-}
-.info-ticker__track {
-  display: flex;
-  align-items: center;
-  height: 100%;
-  width: max-content;
-  animation: ticker-slide 40s linear infinite;
-}
+.info-ticker { background: var(--c-primary); color: #fff; height: 40px; overflow: hidden; position: relative; z-index: 39; }
+.info-ticker__track { display: flex; align-items: center; height: 100%; width: max-content; animation: ticker-slide 40s linear infinite; }
 .info-ticker__track:hover { animation-play-state: paused; }
-@keyframes ticker-slide {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0); }
-}
-.info-ticker__item {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  padding: 0 32px;
-  font-size: 13px;
-  font-weight: 600;
-  white-space: nowrap;
-  border-right: 1px solid rgba(255,255,255,0.2);
-}
+@keyframes ticker-slide { from { transform: translateX(-50%); } to { transform: translateX(0); } }
+.info-ticker__item { display: inline-flex; align-items: center; gap: 8px; padding: 0 32px; font-size: 13px; font-weight: 600; white-space: nowrap; border-right: 1px solid rgba(255,255,255,0.2); }
 .info-ticker__item svg { color: var(--c-gold-light); flex-shrink: 0; }
 .info-ticker__item strong { color: var(--c-gold-light); }
-
-/* ════ UNITS AVAILABLE BANNER ════ */
-.units-banner {
-  background: linear-gradient(90deg, var(--c-primary-darker) 0%, var(--c-primary) 50%, var(--c-primary-darker) 100%);
-  padding: 18px 0;
-  position: relative;
-  overflow: hidden;
-}
-.units-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: url("data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='white' fill-opacity='0.03'%3E%3Cpath d='M20 5L5 17.5V35h10V25h10v10h10V17.5z'/%3E%3C/g%3E%3C/svg%3E");
-}
-.units-banner__inner {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 24px;
-  flex-wrap: wrap;
-  position: relative;
-  z-index: 1;
-}
-.units-banner__info {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  flex-wrap: wrap;
-}
-.units-banner__pulse {
-  width: 12px; height: 12px; border-radius: 50%;
-  background: #22c55e;
-  box-shadow: 0 0 0 0 rgba(34,197,94,0.6);
-  animation: pulse-green 2s infinite;
-  flex-shrink: 0;
-}
-@keyframes pulse-green {
-  0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); }
-  50%      { box-shadow: 0 0 0 10px rgba(34,197,94,0); }
-}
+/* ════ UNITS BANNER ════ */
+.units-banner { background: linear-gradient(90deg, var(--c-primary-darker) 0%, var(--c-primary) 50%, var(--c-primary-darker) 100%); padding: 18px 0; position: relative; overflow: hidden; }
+.units-banner__inner { display: flex; align-items: center; justify-content: space-between; gap: 24px; flex-wrap: wrap; position: relative; z-index: 1; }
+.units-banner__info { display: flex; align-items: center; gap: 16px; flex-wrap: wrap; }
+.units-banner__pulse { width: 12px; height: 12px; border-radius: 50%; background: #22c55e; box-shadow: 0 0 0 0 rgba(34,197,94,0.6); animation: pulse-green 2s infinite; flex-shrink: 0; }
+@keyframes pulse-green { 0%,100% { box-shadow: 0 0 0 0 rgba(34,197,94,0.6); } 50% { box-shadow: 0 0 0 10px rgba(34,197,94,0); } }
 .units-banner__text { color: #fff; font-size: 15px; font-weight: 700; }
-.units-banner__count {
-  background: var(--c-gold);
-  color: var(--c-charcoal);
-  font-size: 12px; font-weight: 800;
-  padding: 4px 12px; border-radius: var(--r-pill);
-}
-.units-banner__tags {
-  display: flex; gap: 8px; flex-wrap: wrap;
-}
-.units-banner__tag {
-  background: rgba(255,255,255,0.12);
-  color: rgba(255,255,255,0.9);
-  font-size: 12px; font-weight: 600;
-  padding: 5px 14px; border-radius: var(--r-pill);
-  border: 1px solid rgba(255,255,255,0.2);
-}
-
+.units-banner__count { background: var(--c-gold); color: var(--c-charcoal); font-size: 12px; font-weight: 800; padding: 4px 12px; border-radius: var(--r-pill); }
+.units-banner__tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.units-banner__tag { background: rgba(255,255,255,0.12); color: rgba(255,255,255,0.9); font-size: 12px; font-weight: 600; padding: 5px 14px; border-radius: var(--r-pill); border: 1px solid rgba(255,255,255,0.2); }
 /* ════ NEWS MODAL ════ */
-.news-modal {
-  position: fixed; inset: 0; z-index: 9999;
-  display: flex; align-items: center; justify-content: center;
-  padding: 16px;
-  opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
-}
+.news-modal { position: fixed; inset: 0; z-index: 9999; display: flex; align-items: center; justify-content: center; padding: 16px; opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease; }
 .news-modal.is-open { opacity: 1; visibility: visible; }
-.news-modal__backdrop {
-  position: absolute; inset: 0;
-  background: rgba(4,30,24,0.75); backdrop-filter: blur(6px);
-  cursor: pointer;
-}
-.news-modal__panel {
-  position: relative; z-index: 1;
-  background: #fff; border-radius: var(--r-xl);
-  max-width: 680px; width: 100%;
-  max-height: 90vh; overflow-y: auto;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.35);
-  transform: translateY(24px) scale(0.97);
-  transition: transform 0.35s var(--ease-out);
-  scrollbar-width: thin;
-}
+.news-modal__backdrop { position: absolute; inset: 0; background: rgba(4,30,24,0.75); backdrop-filter: blur(6px); cursor: pointer; }
+.news-modal__panel { position: relative; z-index: 1; background: #fff; border-radius: var(--r-xl); max-width: 680px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 32px 80px rgba(0,0,0,0.35); transform: translateY(24px) scale(0.97); transition: transform 0.35s var(--ease-out); }
 .news-modal.is-open .news-modal__panel { transform: translateY(0) scale(1); }
-.news-modal__img {
-  width: 100%; height: 260px; object-fit: cover;
-  border-radius: var(--r-xl) var(--r-xl) 0 0; display: block;
-}
-.news-modal__close {
-  position: absolute; top: 14px; left: 14px;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(0,0,0,0.45); border: none; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: background var(--t-fast); z-index: 2;
-}
+.news-modal__img { width: 100%; height: 260px; object-fit: cover; border-radius: var(--r-xl) var(--r-xl) 0 0; display: block; }
+.news-modal__close { position: absolute; top: 14px; left: 14px; width: 36px; height: 36px; border-radius: 50%; background: rgba(0,0,0,0.45); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; transition: background var(--t-fast); z-index: 2; }
 .news-modal__close:hover { background: var(--c-primary); }
 .news-modal__body { padding: 32px; }
-.news-modal__meta {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 16px; flex-wrap: wrap;
-}
-.news-modal__cat {
-  background: var(--c-primary); color: #fff;
-  padding: 4px 12px; border-radius: var(--r-pill);
-  font-size: 11px; font-weight: 700;
-}
-.news-modal__date {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 12px; color: var(--c-text-3);
-}
-.news-modal__title {
-  font-family: var(--f-tajawal); font-size: 24px; font-weight: 900;
-  color: var(--c-text); line-height: 1.35; margin-bottom: 18px;
-}
-.news-modal__content {
-  font-size: 14px; color: var(--c-text-2); line-height: 2;
-}
+.news-modal__meta { display: flex; align-items: center; gap: 12px; margin-bottom: 16px; flex-wrap: wrap; }
+.news-modal__cat { background: var(--c-primary); color: #fff; padding: 4px 12px; border-radius: var(--r-pill); font-size: 11px; font-weight: 700; }
+.news-modal__date { display: flex; align-items: center; gap: 5px; font-size: 12px; color: var(--c-text-3); }
+.news-modal__title { font-family: var(--f-tajawal); font-size: 24px; font-weight: 900; color: var(--c-text); line-height: 1.35; margin-bottom: 18px; }
+.news-modal__content { font-size: 14px; color: var(--c-text-2); line-height: 2; }
 .news-modal__content p { margin-bottom: 14px; }
-.news-modal__content p:last-child { margin-bottom: 0; }
-.news-modal__footer {
-  padding: 20px 32px; border-top: 1px solid var(--c-border);
-  display: flex; gap: 12px; justify-content: flex-end;
-}
-
-/* ════ NEWS MODAL ════ */
-.news-modal {
-  position: fixed; inset: 0; z-index: 9999;
-  display: flex; align-items: center; justify-content: center;
-  padding: 16px;
-  opacity: 0; visibility: hidden; transition: opacity 0.3s ease, visibility 0.3s ease;
-}
-.news-modal.is-open { opacity: 1; visibility: visible; }
-.news-modal__backdrop {
-  position: absolute; inset: 0;
-  background: rgba(4,30,24,0.75); backdrop-filter: blur(6px);
-  cursor: pointer;
-}
-.news-modal__panel {
-  position: relative; z-index: 1;
-  background: #fff; border-radius: var(--r-xl);
-  max-width: 680px; width: 100%;
-  max-height: 90vh; overflow-y: auto;
-  box-shadow: 0 32px 80px rgba(0,0,0,0.35);
-  transform: translateY(24px) scale(0.97);
-  transition: transform 0.35s var(--ease-out);
-  scrollbar-width: thin;
-}
-.news-modal.is-open .news-modal__panel { transform: translateY(0) scale(1); }
-.news-modal__img {
-  width: 100%; height: 260px; object-fit: cover;
-  border-radius: var(--r-xl) var(--r-xl) 0 0; display: block;
-}
-.news-modal__close {
-  position: absolute; top: 14px; left: 14px;
-  width: 36px; height: 36px; border-radius: 50%;
-  background: rgba(0,0,0,0.45); border: none; color: #fff;
-  display: flex; align-items: center; justify-content: center;
-  cursor: pointer; transition: background var(--t-fast); z-index: 2;
-}
-.news-modal__close:hover { background: var(--c-primary); }
-.news-modal__body { padding: 32px; }
-.news-modal__meta {
-  display: flex; align-items: center; gap: 12px;
-  margin-bottom: 16px; flex-wrap: wrap;
-}
-.news-modal__cat {
-  background: var(--c-primary); color: #fff;
-  padding: 4px 12px; border-radius: var(--r-pill);
-  font-size: 11px; font-weight: 700;
-}
-.news-modal__date {
-  display: flex; align-items: center; gap: 5px;
-  font-size: 12px; color: var(--c-text-3);
-}
-.news-modal__title {
-  font-family: var(--f-tajawal); font-size: 24px; font-weight: 900;
-  color: var(--c-text); line-height: 1.35; margin-bottom: 18px;
-}
-.news-modal__content {
-  font-size: 14px; color: var(--c-text-2); line-height: 2;
-}
-.news-modal__content p { margin-bottom: 14px; }
-.news-modal__content p:last-child { margin-bottom: 0; }
-.news-modal__footer {
-  padding: 20px 32px; border-top: 1px solid var(--c-border);
-  display: flex; gap: 12px; justify-content: flex-end;
-}
+.news-modal__footer { padding: 20px 32px; border-top: 1px solid var(--c-border); display: flex; gap: 12px; justify-content: flex-end; }
 </style>
 </head>
 <body>
@@ -1875,74 +1704,8 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
 </header>
 
 <!-- INFO TICKER -->
-<div class="info-ticker" aria-label="معلومات سريعة" role="marquee">
-  <div class="info-ticker__track" id="ticker-track">
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
-      <strong>٧ أبراج سكنية</strong> داخل المشروع
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      <strong>وحدات متاحة</strong> للحجز الفوري
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      تقسيط حتى <strong>٨ سنوات</strong> بدون فوائد
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-      مساحات تبدأ من <strong>١٣٥ م²</strong>
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-      <strong>القاهرة الجديدة</strong> — التجمع الخامس
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-      أمن وحراسة <strong>٢٤/٧</strong>
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-      تشطيب <strong>سوبر لوكس</strong> كامل
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-      اتصل بنا: <strong>16414</strong>
-    </span>
-    <!-- Duplicate for seamless loop -->
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg>
-      <strong>٧ أبراج سكنية</strong> داخل المشروع
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      <strong>وحدات متاحة</strong> للحجز الفوري
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-      تقسيط حتى <strong>٨ سنوات</strong> بدون فوائد
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
-      مساحات تبدأ من <strong>١٣٥ م²</strong>
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg>
-      <strong>القاهرة الجديدة</strong> — التجمع الخامس
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>
-      أمن وحراسة <strong>٢٤/٧</strong>
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z"/></svg>
-      تشطيب <strong>سوبر لوكس</strong> كامل
-    </span>
-    <span class="info-ticker__item">
-      <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
-      اتصل بنا: <strong>16414</strong>
-    </span>
-  </div>
+<div class="info-ticker" aria-label="معلومات سريعة">
+  <div class="info-ticker__track"><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg><strong>٧ أبراج سكنية</strong> داخل المشروع</span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><strong>وحدات متاحة</strong> للحجز الفوري</span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>تقسيط حتى <strong>٨ سنوات</strong> بدون فوائد</span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>مساحات تبدأ من <strong>١٣٥ م²</strong></span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg><strong>القاهرة الجديدة</strong> — التجمع الخامس</span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>أمن وحراسة <strong>٢٤/٧</strong></span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>اتصل بنا: <strong>16414</strong></span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg><strong>٧ أبراج سكنية</strong> داخل المشروع</span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg><strong>وحدات متاحة</strong> للحجز الفوري</span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>تقسيط حتى <strong>٨ سنوات</strong> بدون فوائد</span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>مساحات تبدأ من <strong>١٣٥ م²</strong></span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg><strong>القاهرة الجديدة</strong> — التجمع الخامس</span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/></svg>أمن وحراسة <strong>٢٤/٧</strong></span><span class="info-ticker__item"><svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>اتصل بنا: <strong>16414</strong></span></div>
 </div>
 
 <!-- Mobile Drawer -->
@@ -2026,30 +1789,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
         تحميل البروشور
       </button>
     </div>
-    <div class="hero__stats">
-      <div class="hero-stat" data-reveal data-reveal-delay="100">
-        <span class="hero-stat__num" data-counter="25" data-suffix="+">0</span>
-        <span class="hero-stat__label">عاماً من الخبرة</span>
-      </div>
-      <div class="hero-stat" data-reveal data-reveal-delay="200">
-        <span class="hero-stat__num" data-counter="12" data-suffix="+">0</span>
-        <span class="hero-stat__label">مشروعاً ناجحاً</span>
-      </div>
-      <div class="hero-stat" data-reveal data-reveal-delay="300">
-        <span class="hero-stat__num" data-counter="5000" data-suffix="+">0</span>
-        <span class="hero-stat__label">عائلة سعيدة</span>
-      </div>
-      <div class="hero-stat" data-reveal data-reveal-delay="400">
-        <span class="hero-stat__num" data-counter="98" data-suffix="%">0</span>
-        <span class="hero-stat__label">نسبة الرضا</span>
-      </div>
-    </div>
-  </div>
-  <div class="hero__scroll-indicator" aria-hidden="true">
-    <div class="hero__scroll-mouse"></div>
-    <span>مرر للأسفل</span>
-  </div>
-  <div class="hero__wave"></div>
+   
 </section>
 
 <!-- ABOUT / WHY CHOOSE US -->
@@ -2274,7 +2014,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
   <div class="container">
     <div class="units-banner__inner">
       <div class="units-banner__info">
-        <span class="units-banner__pulse" aria-hidden="true"></span>
+        <span class="units-banner__pulse"></span>
         <span class="units-banner__text">وحدات متاحة للحجز الآن</span>
         <span class="units-banner__count">١٥ وحدة متبقية</span>
       </div>
@@ -2352,48 +2092,36 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
         <div class="project-card__image"><img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?auto=format&fit=crop&w=900&q=80" alt="برج N السكني" loading="lazy"/></div>
         <div class="project-card__overlay"></div>
         <span class="project-card__badge">جديد</span>
-        <span class="project-card__badge project-card__badge--alt">برج سكني</span>
         <button class="project-card__view" aria-label="عرض التفاصيل"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
         <div class="project-card__body">
           <div class="project-card__type">كمباوند فاخر</div>
           <h3 class="project-card__title">برج N الفاخر</h3>
-          <p class="project-card__desc">برج سكني حديث بتصميم معماري فريد يطل على الحديقة المركزية بمساحات تبدأ من ١٦٥ متر مربع.</p>
-          <div class="project-card__meta">
-            <span class="project-card__meta-item"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg> ١٢ وحدة</span>
-            <span class="project-card__meta-item"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg> التجمع الخامس</span>
-          </div>
+          <p class="project-card__desc">برج سكني حديث بتصميم معماري فريد يطل على الحديقة المركزية بمساحات تبدأ من ١٦٥ م².</p>
+          <div class="project-card__meta"><span class="project-card__meta-item">١٢ وحدة</span><span class="project-card__meta-item">التجمع الخامس</span></div>
         </div>
       </article>
       <article class="project-card" data-reveal data-reveal-delay="200">
-        <div class="project-card__image"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80" alt="برج S التجاري" loading="lazy"/></div>
+        <div class="project-card__image"><img src="https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&w=900&q=80" alt="برج S الذكي" loading="lazy"/></div>
         <div class="project-card__overlay"></div>
         <span class="project-card__badge">متاح الآن</span>
-        <span class="project-card__badge project-card__badge--alt">تجاري سكني</span>
         <button class="project-card__view" aria-label="عرض التفاصيل"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
         <div class="project-card__body">
           <div class="project-card__type">برج تجاري سكني</div>
           <h3 class="project-card__title">برج S الذكي</h3>
-          <p class="project-card__desc">برج متعدد الاستخدامات بتقنيات المنزل الذكي مدمجة مع إطلالات بانورامية على كامل المشروع.</p>
-          <div class="project-card__meta">
-            <span class="project-card__meta-item"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg> ٨ وحدات</span>
-            <span class="project-card__meta-item"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg> القاهرة الجديدة</span>
-          </div>
+          <p class="project-card__desc">برج متعدد الاستخدامات بتقنيات المنزل الذكي مدمجة مع إطلالات بانورامية على المشروع.</p>
+          <div class="project-card__meta"><span class="project-card__meta-item">٨ وحدات</span><span class="project-card__meta-item">القاهرة الجديدة</span></div>
         </div>
       </article>
       <article class="project-card" data-reveal data-reveal-delay="300">
         <div class="project-card__image"><img src="https://images.unsplash.com/photo-1560185007-cde436f6a4d0?auto=format&fit=crop&w=900&q=80" alt="برج H النخبة" loading="lazy"/></div>
         <div class="project-card__overlay"></div>
         <span class="project-card__badge">حصري</span>
-        <span class="project-card__badge project-card__badge--alt">دوبلكس</span>
         <button class="project-card__view" aria-label="عرض التفاصيل"><svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></button>
         <div class="project-card__body">
           <div class="project-card__type">دوبلكس فاخر</div>
           <h3 class="project-card__title">برج H النخبة</h3>
           <p class="project-card__desc">دوبلكسات فاخرة بتصميم عصري فريد وتراسات خاصة مع خدمات كونسيرج حصرية لساكنيه.</p>
-          <div class="project-card__meta">
-            <span class="project-card__meta-item"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5"/></svg> ٤ وحدات</span>
-            <span class="project-card__meta-item"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/></svg> النخبة</span>
-          </div>
+          <div class="project-card__meta"><span class="project-card__meta-item">٤ وحدات</span><span class="project-card__meta-item">النخبة</span></div>
         </div>
       </article>
     </div>
@@ -2585,7 +2313,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
 <!-- TESTIMONIALS -->
 <section class="section testimonials">
   <div class="container">
-    <div class="section-header" data-reveal>
+    <div class="section-header">
       <span class="eyebrow">
         <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
         آراء عملائنا
@@ -2670,81 +2398,39 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
         </article>
         <article class="testimonial-card">
           <span class="testimonial-card__quote-mark">"</span>
-          <div class="testimonial-card__stars" aria-label="تقييم 5 من 5">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
+          <div class="testimonial-card__stars"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
           <p class="testimonial-card__text">قررت الانتقال من فيلا إلى شقة في العروبة سكوير وما ندمت لحظة. المساحة الخضراء والهدوء جعل الحياة هنا أكثر راحة، والخصوصية محفوظة تماماً.</p>
-          <div class="testimonial-card__person">
-            <div class="testimonial-card__avatar">ن.ح</div>
-            <div>
-              <div class="testimonial-card__name">نادية حسن</div>
-              <div class="testimonial-card__role">مالكة وحدة - برج N</div>
-            </div>
-          </div>
+          <div class="testimonial-card__person"><div class="testimonial-card__avatar">ن.ح</div><div><div class="testimonial-card__name">نادية حسن</div><div class="testimonial-card__role">مالكة وحدة - برج N</div></div></div>
         </article>
         <article class="testimonial-card">
           <span class="testimonial-card__quote-mark">"</span>
-          <div class="testimonial-card__stars" aria-label="تقييم 5 من 5">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
+          <div class="testimonial-card__stars"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
           <p class="testimonial-card__text">فريق المبيعات كان شفافاً ومحترفاً من أول يوم. أسعار مناسبة جداً لجودة التشطيب والموقع. الكومباوند يوفر كل ما تحتاجه بدون ما تخرج منه.</p>
-          <div class="testimonial-card__person">
-            <div class="testimonial-card__avatar">ط.م</div>
-            <div>
-              <div class="testimonial-card__name">طارق منصور</div>
-              <div class="testimonial-card__role">مستثمر - برج H</div>
-            </div>
-          </div>
+          <div class="testimonial-card__person"><div class="testimonial-card__avatar">ط.م</div><div><div class="testimonial-card__name">طارق منصور</div><div class="testimonial-card__role">مستثمر - برج H</div></div></div>
         </article>
         <article class="testimonial-card">
           <span class="testimonial-card__quote-mark">"</span>
-          <div class="testimonial-card__stars" aria-label="تقييم 5 من 5">
-            <svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
-          </div>
+          <div class="testimonial-card__stars"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
           <p class="testimonial-card__text">اشتريت وحدة على المخطط وتسلمتها في الموعد المحدد بالضبط. التشطيب كان أفضل من المعروض بكثير. ده اللي بيخلي العروبة سكوير مختلفة عن غيرها.</p>
-          <div class="testimonial-card__person">
-            <div class="testimonial-card__avatar">ر.ع</div>
-            <div>
-              <div class="testimonial-card__name">ريم العنزي</div>
-              <div class="testimonial-card__role">مالكة وحدة - برج U</div>
-            </div>
-          </div>
+          <div class="testimonial-card__person"><div class="testimonial-card__avatar">ر.ع</div><div><div class="testimonial-card__name">ريم العنزي</div><div class="testimonial-card__role">مالكة وحدة - برج U</div></div></div>
         </article>
         <article class="testimonial-card">
           <span class="testimonial-card__quote-mark">"</span>
-          <div class="testimonial-card__stars" aria-label="تقييم 5 من 5"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div class="testimonial-card__stars"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
           <p class="testimonial-card__text">المشروع تجاوز كل توقعاتنا. جودة التشطيب عالمية والموقع ممتاز جداً. فريق الصيانة دائماً متاح وسريع الاستجابة. أنصح كل من يريد الاستثمار بالتوجه لهنا.</p>
-          <div class="testimonial-card__person">
-            <div class="testimonial-card__avatar">ع.س</div>
-            <div>
-              <div class="testimonial-card__name">عمرو سليم</div>
-              <div class="testimonial-card__role">مستثمر - برج Z</div>
-            </div>
-          </div>
+          <div class="testimonial-card__person"><div class="testimonial-card__avatar">ع.س</div><div><div class="testimonial-card__name">عمرو سليم</div><div class="testimonial-card__role">مستثمر - برج Z</div></div></div>
         </article>
         <article class="testimonial-card">
           <span class="testimonial-card__quote-mark">"</span>
-          <div class="testimonial-card__stars" aria-label="تقييم 5 من 5"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div class="testimonial-card__stars"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
           <p class="testimonial-card__text">من أفضل القرارات اللي اتخذتها في حياتي. الكومباوند فيه كل حاجة — مدارس، مستشفى، مول، حمام سباحة. أولادي سعداء جداً والحياة هنا أهدأ وأنظف بكتير.</p>
-          <div class="testimonial-card__person">
-            <div class="testimonial-card__avatar">م.ع</div>
-            <div>
-              <div class="testimonial-card__name">منى عادل</div>
-              <div class="testimonial-card__role">مالكة وحدة - برج K</div>
-            </div>
-          </div>
+          <div class="testimonial-card__person"><div class="testimonial-card__avatar">م.ع</div><div><div class="testimonial-card__name">منى عادل</div><div class="testimonial-card__role">مالكة وحدة - برج K</div></div></div>
         </article>
         <article class="testimonial-card">
           <span class="testimonial-card__quote-mark">"</span>
-          <div class="testimonial-card__stars" aria-label="تقييم 5 من 5"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
+          <div class="testimonial-card__stars"><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg><svg width="16" height="16" fill="currentColor" viewBox="0 0 24 24"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg></div>
           <p class="testimonial-card__text">اشتريت وحدتي بالتقسيط وما شعرت بأي ضغط مالي. فريق المبيعات شرح كل التفاصيل بوضوح تام. التسليم جاء في موعده وبتشطيب أعلى مما توقعت.</p>
-          <div class="testimonial-card__person">
-            <div class="testimonial-card__avatar">ي.ح</div>
-            <div>
-              <div class="testimonial-card__name">يوسف حمدان</div>
-              <div class="testimonial-card__role">مالك وحدة - برج T</div>
-            </div>
-          </div>
+          <div class="testimonial-card__person"><div class="testimonial-card__avatar">ي.ح</div><div><div class="testimonial-card__name">يوسف حمدان</div><div class="testimonial-card__role">مالك وحدة - برج T</div></div></div>
         </article>
       </div>
       <div class="testimonials__nav">
@@ -2978,47 +2664,29 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
         </div>
       </article>
       <article class="news-card" data-reveal data-reveal-delay="100">
-        <div class="news-card__image">
-          <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="اتفاقية شراكة جديدة" loading="lazy"/>
-          <span class="news-card__category">أعمال</span>
-        </div>
+        <div class="news-card__image"><img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80" alt="اتفاقية كارفور" loading="lazy"/><span class="news-card__category">أعمال</span></div>
         <div class="news-card__body">
-          <div class="news-card__date">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <span>٥ يونيو ٢٠٢٦</span>
-          </div>
+          <div class="news-card__date"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>٥ يونيو ٢٠٢٦</span></div>
           <h3 class="news-card__title">اتفاقية شراكة استراتيجية مع كارفور</h3>
-          <p class="news-card__excerpt">أبرمنا اتفاقية شراكة حصرية مع كارفور هايبرماركت لتشغيل فرع ضخم داخل المشروع بمساحة تتجاوز ٨٠٠٠ متر مربع.</p>
+          <p class="news-card__excerpt">أبرمنا اتفاقية حصرية مع كارفور لتشغيل فرع ضخم داخل المشروع بمساحة تتجاوز ٨٠٠٠ متر مربع.</p>
           <a href="#" class="news-card__more">اقرأ المزيد <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></a>
         </div>
       </article>
       <article class="news-card" data-reveal data-reveal-delay="200">
-        <div class="news-card__image">
-          <img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" alt="تسليم وحدات برج K" loading="lazy"/>
-          <span class="news-card__category">تسليمات</span>
-        </div>
+        <div class="news-card__image"><img src="https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80" alt="تسليم برج K" loading="lazy"/><span class="news-card__category">تسليمات</span></div>
         <div class="news-card__body">
-          <div class="news-card__date">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <span>٢٠ أبريل ٢٠٢٦</span>
-          </div>
+          <div class="news-card__date"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>٢٠ أبريل ٢٠٢٦</span></div>
           <h3 class="news-card__title">بدء تسليم وحدات برج K في موعدها</h3>
           <p class="news-card__excerpt">انطلقت عمليات تسليم وحدات برج K بتشطيب سوبر لوكس كامل في الموعد المحدد وسط احتفالات مع العملاء.</p>
           <a href="#" class="news-card__more">اقرأ المزيد <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></a>
         </div>
       </article>
       <article class="news-card" data-reveal data-reveal-delay="300">
-        <div class="news-card__image">
-          <img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=800&q=80" alt="معرض سيتي سكيب" loading="lazy"/>
-          <span class="news-card__category">معارض</span>
-        </div>
+        <div class="news-card__image"><img src="https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=800&q=80" alt="معرض سيتي سكيب" loading="lazy"/><span class="news-card__category">معارض</span></div>
         <div class="news-card__body">
-          <div class="news-card__date">
-            <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-            <span>١ مارس ٢٠٢٦</span>
-          </div>
+          <div class="news-card__date"><svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span>١ مارس ٢٠٢٦</span></div>
           <h3 class="news-card__title">مشاركتنا في معرض سيتي سكيب القاهرة ٢٠٢٦</h3>
-          <p class="news-card__excerpt">حققنا نجاحاً كبيراً في معرض سيتي سكيب مع حجز ٤٢ وحدة خلال أيام المعرض وتوقيع عقود بقيمة ٣٢٠ مليون جنيه.</p>
+          <p class="news-card__excerpt">حققنا نجاحاً كبيراً مع حجز ٤٢ وحدة وعقود بقيمة ٣٢٠ مليون جنيه خلال أيام المعرض الأربعة.</p>
           <a href="#" class="news-card__more">اقرأ المزيد <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M15 19l-7-7 7-7"/></svg></a>
         </div>
       </article>
@@ -3470,6 +3138,29 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
   <img class="lightbox__img" src="" alt=""/>
 </div>
 
+
+<!-- NEWS MODAL -->
+<div class="news-modal" id="news-modal" role="dialog" aria-label="تفاصيل الخبر">
+  <div class="news-modal__backdrop" id="nm-backdrop"></div>
+  <div class="news-modal__panel">
+    <img class="news-modal__img" id="nm-img" src="" alt=""/>
+    <button class="news-modal__close" id="nm-close" aria-label="إغلاق">
+      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+    </button>
+    <div class="news-modal__body">
+      <div class="news-modal__meta">
+        <span class="news-modal__cat" id="nm-cat"></span>
+        <div class="news-modal__date"><svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg><span id="nm-date"></span></div>
+      </div>
+      <h2 class="news-modal__title" id="nm-title"></h2>
+      <div class="news-modal__content" id="nm-body"></div>
+    </div>
+    <div class="news-modal__footer">
+      <button class="btn btn--outline btn--sm" id="nm-close2">إغلاق</button>
+      <button class="btn btn--primary btn--sm" id="nm-cta">تواصل معنا</button>
+    </div>
+  </div>
+</div>
 <script>
 'use strict';
 
@@ -3586,33 +3277,33 @@ const SRV_ICONS={
 
 const BLDS=[
   {id:'building-k',nm:'برج K',de:'برج سكني فاخر يطل على المساحات الخضراء الرئيسية والبحيرات الصناعية.',floors:12,units:[
-    {id:'unit-k1',nm:'الوحدة السكنية K 1',ar:'143.00 m² - 170.50 m²',rm:3,bt:2,status:'available',fs:['إطلالة بانورامية كاملة على المسبح الرئيسي','صالة استقبال واسعة بـ 3 قطع منفصلة','غرفة نوم رئيسية ملحق بها حمام وغرفة ملابس','تراس مطل على حدائق اللاندسكيب']},
-    {id:'unit-k2',nm:'الوحدة السكنية K 2',ar:'150.00 m² - 165.00 m²',rm:3,bt:2,status:'available',fs:['موقع ناصية مميز باتجاه بحري شرقي','غرفة غسيل وغرفة خادمة ملحقة','2 تراس واسع بإطلالات مزدوجة']},
-    {id:'unit-k3',nm:'الوحدة السكنية K 3',ar:'143.00 m² - 155.00 m²',rm:3,bt:2,status:'reserved',fs:['استغلال مثالي لكافة مساحات الغرف','صالة معيشة مفتوحة ومطبخ أمريكي راقٍ','إطلالة هادئة مريحة على الحزام الأخضر']},
-    {id:'unit-k4',nm:'الوحدة السكنية K 4',ar:'160.00 m² - 170.50 m²',rm:4,bt:3,status:'available',fs:['مساحة كبيرة تناسب العائلات الكبيرة','غرفة معيشة مستقلة تضمن خصوصية تامة','مطبخ مغلق بمساحة كبيرة وتهوية طبيعية']},
-    {id:'unit-k5',nm:'الوحدة السكنية K 5',ar:'145.00 m² - 168.00 m²',rm:3,bt:2,status:'available',fs:['إطلالة مزدوجة على المسبح والحديقة','شرفة واسعة تتسع لطاولة جلوس خارجية']},
-    {id:'unit-k6',nm:'الوحدة السكنية K 6',ar:'155.00 m² - 170.50 m²',rm:3,bt:2,status:'available',fs:['سقف مرتفع وتصميمات داخلية أنيقة','موقع هادئ بعيد عن الضوضاء']}
+    {id:'unit-k1',nm:'الوحدة السكنية K 1',ar:'143.00 m² - 170.50 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80',fs:['إطلالة بانورامية كاملة على المسبح الرئيسي','صالة استقبال واسعة بـ 3 قطع منفصلة','غرفة نوم رئيسية ملحق بها حمام وغرفة ملابس','تراس مطل على حدائق اللاندسكيب']},
+    {id:'unit-k2',nm:'الوحدة السكنية K 2',ar:'150.00 m² - 165.00 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=80',fs:['موقع ناصية مميز باتجاه بحري شرقي','غرفة غسيل وغرفة خادمة ملحقة','2 تراس واسع بإطلالات مزدوجة']},
+    {id:'unit-k3',nm:'الوحدة السكنية K 3',ar:'143.00 m² - 155.00 m²',rm:3,bt:2,status:'reserved',img:'https://images.unsplash.com/photo-1600210492493-0946911123ea?auto=format&fit=crop&w=900&q=80',fs:['استغلال مثالي لكافة مساحات الغرف','صالة معيشة مفتوحة ومطبخ أمريكي راقٍ','إطلالة هادئة مريحة على الحزام الأخضر']},
+    {id:'unit-k4',nm:'الوحدة السكنية K 4',ar:'160.00 m² - 170.50 m²',rm:4,bt:3,status:'available',img:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80',fs:['مساحة كبيرة تناسب العائلات الكبيرة','غرفة معيشة مستقلة تضمن خصوصية تامة','مطبخ مغلق بمساحة كبيرة وتهوية طبيعية']},
+    {id:'unit-k5',nm:'الوحدة السكنية K 5',ar:'145.00 m² - 168.00 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1502005229762-cf1b2da7c5d6?auto=format&fit=crop&w=900&q=80',fs:['إطلالة مزدوجة على المسبح والحديقة','شرفة واسعة تتسع لطاولة جلوس خارجية']},
+    {id:'unit-k6',nm:'الوحدة السكنية K 6',ar:'155.00 m² - 170.50 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=900&q=80',fs:['سقف مرتفع وتصميمات داخلية أنيقة','موقع هادئ بعيد عن الضوضاء']}
   ]},
   {id:'building-t',nm:'برج T',de:'برج سكني تجاري متكامل يطل مباشرة على المول التجاري والشارع الرئيسي.',floors:14,units:[
-    {id:'unit-t1',nm:'الوحدة السكنية T 1',ar:'135.00 m² - 160.00 m²',rm:3,bt:2,status:'available',fs:['قريبة جداً من البوابة والمنطقة التجارية','صالة طعام واسعة وتراس خارجي']},
-    {id:'unit-t2',nm:'الوحدة السكنية T 2',ar:'145.00 m² - 158.00 m²',rm:3,bt:2,status:'available',fs:['إطلالة مميزة على كارفور والمول الجديد']},
-    {id:'unit-t3',nm:'الوحدة السكنية T 3',ar:'152.00 m² - 168.00 m²',rm:3,bt:2,status:'reserved',fs:['تشطيب كامل ترا سوبر لوكس جاهز للمعيشة']}
+    {id:'unit-t1',nm:'الوحدة السكنية T 1',ar:'135.00 m² - 160.00 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=900&q=80',fs:['قريبة جداً من البوابة والمنطقة التجارية','صالة طعام واسعة وتراس خارجي']},
+    {id:'unit-t2',nm:'الوحدة السكنية T 2',ar:'145.00 m² - 158.00 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=900&q=80',fs:['إطلالة مميزة على كارفور والمول الجديد']},
+    {id:'unit-t3',nm:'الوحدة السكنية T 3',ar:'152.00 m² - 168.00 m²',rm:3,bt:2,status:'reserved',img:'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=80',fs:['تشطيب كامل ترا سوبر لوكس جاهز للمعيشة']}
   ]},
   {id:'building-s',nm:'برج S',de:'برج عائلي مخصص للسكن الهادئ محاط بمسارات المشي وألعاب الأطفال.',floors:10,units:[
-    {id:'unit-s1',nm:'الوحدة السكنية S 1',ar:'150.00 m² - 175.00 m²',rm:3,bt:2,status:'available',fs:['مطلة مباشرة على منطقة ألعاب الأطفال']},
-    {id:'unit-s2',nm:'الوحدة السكنية S 2',ar:'162.00 m² - 180.00 m²',rm:4,bt:3,status:'available',fs:['٤ غرف نوم مع صالة استقبال ملكية']}
+    {id:'unit-s1',nm:'الوحدة السكنية S 1',ar:'150.00 m² - 175.00 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1600121848594-d8644e57abab?auto=format&fit=crop&w=900&q=80',fs:['مطلة مباشرة على منطقة ألعاب الأطفال']},
+    {id:'unit-s2',nm:'الوحدة السكنية S 2',ar:'162.00 m² - 180.00 m²',rm:4,bt:3,status:'available',img:'https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?auto=format&fit=crop&w=900&q=80',fs:['٤ غرف نوم مع صالة استقبال ملكية']}
   ]},
   {id:'building-n',nm:'برج N',de:'برج ناصية ذو إطلالة خلابة على الحدائق المركزية والبحيرات.',floors:11,units:[
-    {id:'unit-n1',nm:'الوحدة السكنية N 1',ar:'140.00 m² - 165.00 m²',rm:3,bt:2,status:'available',fs:['مساحة صالة واسعة جداً وتكييف مركزي']}
+    {id:'unit-n1',nm:'الوحدة السكنية N 1',ar:'140.00 m² - 165.00 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1560185127-6a9a1c8d1b21?auto=format&fit=crop&w=900&q=80',fs:['مساحة صالة واسعة جداً وتكييف مركزي']}
   ]},
   {id:'building-h',nm:'برج H',de:'موقع فريد بالقرب من النادي الرياضي والاجتماعي الخاص بالكومباوند.',floors:9,units:[
-    {id:'unit-h1',nm:'الوحدة السكنية H 1',ar:'148.00 m² - 170.00 m²',rm:3,bt:2,status:'available',fs:['تراس واسع بإطلالة جنوبية مريحة']}
+    {id:'unit-h1',nm:'الوحدة السكنية H 1',ar:'148.00 m² - 170.00 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1583847268964-b28dc8f51f92?auto=format&fit=crop&w=900&q=80',fs:['تراس واسع بإطلالة جنوبية مريحة']}
   ]},
   {id:'building-u',nm:'برج U',de:'أبراج فاخرة ملحق بها جراجات خاصة بمداخل ومخارج منفصلة.',floors:8,units:[
-    {id:'unit-u1',nm:'الوحدة السكنية U 1',ar:'138.00 m² - 160.00 m²',rm:3,bt:2,status:'available',fs:['جراج سيارة مؤمن تحت الأرض شامل مع الوحدة']}
+    {id:'unit-u1',nm:'الوحدة السكنية U 1',ar:'138.00 m² - 160.00 m²',rm:3,bt:2,status:'available',img:'https://images.unsplash.com/photo-1484154218962-a197022b5858?auto=format&fit=crop&w=900&q=80',fs:['جراج سيارة مؤمن تحت الأرض شامل مع الوحدة']}
   ]},
   {id:'building-z',nm:'برج Z',de:'برج النخبة الحصري بمساحات شاسعة وبنتهاوس بحمام سباحة خاص.',floors:6,units:[
-    {id:'unit-z1',nm:'الوحدة السكنية Z 1 (بنتهاوس)',ar:'210.00 m² - 320.00 m²',rm:5,bt:4,status:'available',penthouse:true,fs:['مسبح وتراس خاص بسطح المبنى بالكامل','مصعد مخصص يصل مباشرة داخل البنتهاوس']}
+    {id:'unit-z1',nm:'الوحدة السكنية Z 1 (بنتهاوس)',ar:'210.00 m² - 320.00 m²',rm:5,bt:4,status:'available',penthouse:true,img:'https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80',fs:['مسبح وتراس خاص بسطح المبنى بالكامل','مصعد مخصص يصل مباشرة داخل البنتهاوس']}
   ]}
 ];
 
@@ -3827,28 +3518,18 @@ const ServicesGrid = (() => {
       </div>
     </article>
   `).join('');
-
-  // Observe newly injected cards for reveal animation
+  // Observe newly injected cards
   const svcCards = Utils.$$('.svc-card[data-reveal]', grid);
   if ('IntersectionObserver' in window) {
     const svcIo = new IntersectionObserver((entries) => {
-      entries.forEach(en => {
-        if (en.isIntersecting) { en.target.classList.add('is-visible'); svcIo.unobserve(en.target); }
-      });
+      entries.forEach(en => { if (en.isIntersecting) { en.target.classList.add('is-visible'); svcIo.unobserve(en.target); } });
     }, { threshold: 0.12, rootMargin: '0px 0px -50px 0px' });
     svcCards.forEach(el => svcIo.observe(el));
-  } else {
-    svcCards.forEach(el => el.classList.add('is-visible'));
-  }
-
-  // Re-run image fallback handler for newly added images
+  } else { svcCards.forEach(el => el.classList.add('is-visible')); }
+  // Image fallbacks
   grid.querySelectorAll('img[data-fallback]').forEach(img => {
-    img.addEventListener('error', function handleError() {
-      const fb = this.getAttribute('data-fallback');
-      if (fb && this.src !== fb) this.src = fb;
-    }, { once: true });
+    img.addEventListener('error', function() { const fb=this.getAttribute('data-fallback'); if(fb&&this.src!==fb)this.src=fb; }, {once:true});
   });
-
   Utils.$$('.svc-card').forEach(c => Utils.on(c, 'click', () => openSrv(c.dataset.service)));
 })();
 
@@ -3934,6 +3615,9 @@ const UnitsView = (() => {
         </button>
         <div class="unit-card__body">
           <div class="unit-card__body-inner">
+            <div class="unit-card__unit-img">
+              <img src="${u.img || 'https://images.unsplash.com/photo-1493809842364-78817add7ffb?auto=format&fit=crop&w=900&q=80'}" alt="${u.nm}" loading="lazy" />
+            </div>
             <div class="unit-card__detail-grid">
               <div>
                 <div class="unit-card__section-title">تفاصيل المساحات والتقسيم الداخلي</div>
@@ -4108,14 +3792,11 @@ const Testimonials = (() => {
   function update() {
     const card = cards[0];
     const w = (card.getBoundingClientRect().width || card.offsetWidth || 300) + 24;
-    // RTL: moving forward means shifting right (positive), but translateX in RTL layout
-    // The track is LTR internally (flex), so next = negative X
     track.style.transform = `translateX(${idx * w * -1}px)`;
     Utils.$$('.testimonials__dot', dotsEl).forEach((d, i) => d.classList.toggle('is-active', i === idx));
   }
   function buildDots() {
     dotsEl.innerHTML = '';
-    idx = Math.min(idx, maxIdx());
     const n = maxIdx() + 1;
     for (let i = 0; i < n; i++) {
       const d = document.createElement('button');
@@ -4128,14 +3809,13 @@ const Testimonials = (() => {
   Utils.on(Utils.$('#t-prev'), 'click', () => { idx = idx <= 0 ? maxIdx() : idx - 1; update(); clearInterval(autoPlay); });
   Utils.on(Utils.$('#t-next'), 'click', () => { idx = idx >= maxIdx() ? 0 : idx + 1; update(); clearInterval(autoPlay); });
   Utils.on(window, 'resize', () => { buildDots(); });
-  // Auto-advance every 5s
   let autoPlay = setInterval(() => { idx = idx >= maxIdx() ? 0 : idx + 1; update(); }, 5000);
-  track.closest('.testimonials__viewport').addEventListener('mouseenter', () => clearInterval(autoPlay));
-  track.closest('.testimonials__viewport').addEventListener('mouseleave', () => {
-    autoPlay = setInterval(() => { idx = idx >= maxIdx() ? 0 : idx + 1; update(); }, 5000);
-  });
-  // Init after layout paint
-  requestAnimationFrame(() => { requestAnimationFrame(() => buildDots()); });
+  const tvp = track.closest('.testimonials__viewport');
+  if (tvp) {
+    tvp.addEventListener('mouseenter', () => clearInterval(autoPlay));
+    tvp.addEventListener('mouseleave', () => { autoPlay = setInterval(() => { idx = idx >= maxIdx() ? 0 : idx + 1; update(); }, 5000); });
+  }
+  requestAnimationFrame(() => requestAnimationFrame(() => buildDots()));
 })();
 
 /* ════════════════════════════════════════════════
@@ -4168,8 +3848,8 @@ const VideoModal = (() => {
   const iframe = Utils.$('#vif');
   function open(url) { iframe.src = url + '?autoplay=1'; modal.classList.add('is-open'); document.body.classList.add('no-scroll'); }
   function close() { modal.classList.remove('is-open'); iframe.src = ''; document.body.classList.remove('no-scroll'); }
-  Utils.on(Utils.$('#h-vid-btn'), 'click', () => open('https://www.youtube.com/embed/dQw4w9WgXcQ'));
-  Utils.on(Utils.$('#play-video-2'), 'click', () => open('https://www.youtube.com/embed/dQw4w9WgXcQ'));
+  Utils.on(Utils.$('#h-vid-btn'), 'click', () => open('assets/images/Al Orouba Square.mp4'));
+  Utils.on(Utils.$('#play-video-2'), 'click', () => open('assets/images/Al Orouba Square.mp4'));
   Utils.on(Utils.$('#vcls'), 'click', close);
   Utils.on(modal, 'click', (e) => { if (e.target === modal) close(); });
   Utils.on(document, 'keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
@@ -4188,13 +3868,8 @@ const Lightbox = (() => {
   // Optional: open on lifestyle image click
   Utils.$$('.lifestyle-item img').forEach(i => Utils.on(i, 'click', () => open(i.src)));
   Utils.$$('.project-card__image img').forEach(i => Utils.on(i, 'click', () => open(i.src)));
-  // Also clicking the view button opens lightbox
   Utils.$$('.project-card__view').forEach(btn => {
-    Utils.on(btn, 'click', (e) => {
-      e.stopPropagation();
-      const img = btn.closest('.project-card').querySelector('.project-card__image img');
-      if (img) open(img.src);
-    });
+    Utils.on(btn, 'click', (e) => { e.stopPropagation(); const img = btn.closest('.project-card').querySelector('img'); if(img) open(img.src); });
   });
 })();
 
@@ -4286,43 +3961,28 @@ UnitsView.render();
 UnitsCatalog.render();
 
 /* ════════════════════════════════════════════════
-   NEWS DATA
+   NEWS DATA & MODAL
    ════════════════════════════════════════════════ */
 const NEWS_DATA = [
-  {id:'n1',title:'افتتاح المرحلة الجديدة من العروبة سكوير',cat:'إعلان',date:'١٥ يونيو ٢٠٢٦',
-    img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',
-    content:`<p>يسعدنا الإعلان عن الإطلاق الرسمي للمرحلة الجديدة من مشروع العروبة سكوير، استجابةً للطلب المتزايد من عملائنا ورؤيتنا في تقديم أفضل تجربة سكنية متكاملة في القاهرة الجديدة.</p><p>تتميز هذه المرحلة بمساحات أوسع تبدأ من ١٦٥ م² للوحدات القياسية وصولاً إلى ٤٢٠ م² للبنتهاوسات الفاخرة، مع تشطيب سوبر لوكس كامل بأحدث مواد البناء الإيطالية والإسبانية.</p><p>خطط السداد تشمل: مقدم ٥٪ فقط مع تقسيط يصل إلى ٨ سنوات بدون فوائد، وخصم ١٠٪ للسداد الكاش. أول ٣٠ عميل يحظون بعروض حصرية إضافية.</p><p>للحجز والاستفسار تواصل معنا على ١٦٤١٤.</p>`},
-  {id:'n2',title:'افتتاح المسبح الأولمبي والنادي المائي',cat:'فعاليات',date:'٢٨ مايو ٢٠٢٦',
-    img:'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800&q=80',
-    content:`<p>احتفل مشروع العروبة سكوير بافتتاح منظومة النادي المائي المتكاملة الأضخم في كمباوندات القاهرة الجديدة، في حفل بهيج حضره المئات من ساكني المشروع.</p><p>يضم النادي المائي حوضاً أولمبياً ٥٠م بـ٨ مسارات دولية، وحوضاً للأطفال بألعاب مائية، وجاكوزي وسبا بدرجات حرارة متنوعة، وكافيه بحري راقٍ.</p><p>يعمل في النادي طاقم منقذين معتمدين دولياً. المسبح متاح لساكني المشروع من ٧ص حتى ١٠م يومياً.</p>`},
-  {id:'n3',title:'حصولنا على جائزة أفضل مشروع سكني',cat:'جوائز',date:'١٠ مايو ٢٠٢٦',
-    img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80',
-    content:`<p>تشرفنا بتسلّم جائزة أفضل مشروع سكني متكامل لعام ٢٠٢٦ من المؤسسة العقارية العربية خلال حفل فندق فور سيزونز القاهرة.</p><p>جاء التميز نتيجة تقييم يغطي: جودة التشطيب والبناء، تنوع المرافق، الالتزام بمواعيد التسليم، ومستوى رضا العملاء الذي سجّل ٩٤٪.</p><p>هذه الجائزة تُضاف إلى رصيدنا الذي يتجاوز ١٥ جائزة محلية وإقليمية خلال السنوات الخمس الأخيرة.</p>`},
-  {id:'n4',title:'اتفاقية شراكة استراتيجية مع كارفور',cat:'أعمال',date:'٥ يونيو ٢٠٢٦',
-    img:'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',
-    content:`<p>وقّعنا اتفاقية شراكة حصرية مع مجموعة ماجد الفطيم مشغّل كارفور في مصر، لإنشاء وتشغيل فرع ضخم داخل المجمع التجاري للعروبة سكوير.</p><p>الفرع على مساحة ٨٠٠٠ م² بطابقين، يوفر ٥٠ ألف منتج بأسعار تنافسية، ويُفتتح رسمياً في الربع الأول من ٢٠٢٧ مع ٤٥٠ فرصة عمل لأبناء المنطقة.</p>`},
-  {id:'n5',title:'بدء تسليم وحدات برج K في موعدها',cat:'تسليمات',date:'٢٠ أبريل ٢٠٢٦',
-    img:'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',
-    content:`<p>انطلقت عمليات التسليم الرسمي لوحدات برج K في موعدها تماماً وسط احتفالات بهيجة مع عملائنا الكرام.</p><p>التشطيب يشمل: بورسلان إسباني ٩٠×٩٠، دهانات إيطالية ٣ طبقات، أدوات صحية GROHE، تكييف مركزي مخفي، مطبخ مجهز بالكامل، وإنارة ذكية بالتطبيق.</p><p>برج K يضم ٦ وحدات بإطلالات على المساحات الخضراء والبحيرات، مساحات ١٤٣–١٩٠ م².</p>`},
-  {id:'n6',title:'مشاركتنا في معرض سيتي سكيب القاهرة ٢٠٢٦',cat:'معارض',date:'١ مارس ٢٠٢٦',
-    img:'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=800&q=80',
-    content:`<p>شاركنا بجناح ٦٠٠م² في معرض سيتي سكيب القاهرة ٢٠٢٦ بنماذج ثلاثية الأبعاد وجولات VR افتراضية للمشروع.</p><p>خلال ٤ أيام: ٣٢٠٠+ زائر، حجز ٤٢ وحدة، عقود بقيمة ٣٢٠ مليون جنيه — من أكثر المطورين نشاطاً في المعرض.</p><p>نشكر كل من زارنا ونتطلع للقاء المزيد في الفعاليات القادمة.</p>`}
+  {id:'n1',title:'افتتاح المرحلة الجديدة من العروبة سكوير',cat:'إعلان',date:'١٥ يونيو ٢٠٢٦',img:'https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=800&q=80',content:`<p>يسعدنا الإعلان عن الإطلاق الرسمي للمرحلة الجديدة من مشروع العروبة سكوير استجابةً للطلب المتزايد من عملائنا الكرام.</p><p>تتميز هذه المرحلة بمساحات تبدأ من ١٦٥ م² للوحدات القياسية وصولاً إلى ٤٢٠ م² للبنتهاوسات، مع تشطيب سوبر لوكس بأحدث مواد البناء الإيطالية.</p><p>خطط السداد: مقدم ٥٪ مع تقسيط ٨ سنوات بدون فوائد، وخصم ١٠٪ للسداد الكاش. للحجز: ١٦٤١٤.</p>`},
+  {id:'n2',title:'افتتاح المسبح الأولمبي والنادي المائي',cat:'فعاليات',date:'٢٨ مايو ٢٠٢٦',img:'https://images.unsplash.com/photo-1582268611958-ebfd161ef9cf?auto=format&fit=crop&w=800&q=80',content:`<p>احتفل المشروع بافتتاح النادي المائي المتكامل الأضخم في كمباوندات القاهرة الجديدة.</p><p>يضم حوضاً أولمبياً ٥٠م بـ٨ مسارات دولية، وحوضاً للأطفال بألعاب مائية، وجاكوزي وسبا، وكافيه بحري راقٍ.</p><p>المسبح متاح لساكني المشروع من ٧ صباحاً حتى ١٠ مساءً يومياً.</p>`},
+  {id:'n3',title:'حصولنا على جائزة أفضل مشروع سكني',cat:'جوائز',date:'١٠ مايو ٢٠٢٦',img:'https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=800&q=80',content:`<p>تشرفنا بتسلّم جائزة أفضل مشروع سكني متكامل لعام ٢٠٢٦ من المؤسسة العقارية العربية.</p><p>التقييم غطى: جودة التشطيب، تنوع المرافق، الالتزام بالتسليم، ورضا العملاء الذي بلغ ٩٤٪.</p><p>هذه الجائزة تُضاف لأكثر من ١٥ جائزة محلية وإقليمية في السنوات الخمس الأخيرة.</p>`},
+  {id:'n4',title:'اتفاقية شراكة استراتيجية مع كارفور',cat:'أعمال',date:'٥ يونيو ٢٠٢٦',img:'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80',content:`<p>وقّعنا اتفاقية شراكة حصرية مع مجموعة ماجد الفطيم مشغّل كارفور في مصر.</p><p>الفرع على مساحة ٨٠٠٠ م² بطابقين، يوفر ٥٠ ألف منتج، يُفتتح الربع الأول ٢٠٢٧ مع ٤٥٠ فرصة عمل.</p>`},
+  {id:'n5',title:'بدء تسليم وحدات برج K في موعدها',cat:'تسليمات',date:'٢٠ أبريل ٢٠٢٦',img:'https://images.unsplash.com/photo-1512917774080-9991f1c4c750?auto=format&fit=crop&w=800&q=80',content:`<p>انطلقت عمليات تسليم برج K في موعدها تماماً وسط احتفالات مع العملاء.</p><p>التشطيب يشمل: بورسلان إسباني ٩٠×٩٠، دهانات إيطالية، أدوات صحية GROHE، تكييف مركزي، مطبخ مجهز، وإنارة ذكية.</p>`},
+  {id:'n6',title:'مشاركتنا في معرض سيتي سكيب القاهرة ٢٠٢٦',cat:'معارض',date:'١ مارس ٢٠٢٦',img:'https://images.unsplash.com/photo-1466978913421-dad2ebd01d17?auto=format&fit=crop&w=800&q=80',content:`<p>شاركنا بجناح ٦٠٠م² في معرض سيتي سكيب ٢٠٢٦ بنماذج ثلاثية الأبعاد وجولات VR.</p><p>خلال ٤ أيام: ٣٢٠٠+ زائر، حجز ٤٢ وحدة، عقود بقيمة ٣٢٠ مليون جنيه.</p>`}
 ];
 
-/* ════════════════════════════════════════════════
-   NEWS MODAL
-   ════════════════════════════════════════════════ */
-const NewsModal = (() => {
-  const modal = Utils.$('#news-modal');
+(function initNewsModal() {
+  var modal = document.getElementById('news-modal');
   if (!modal) return;
-  const nmImg = Utils.$('#nm-img');
-  const nmCat = Utils.$('#nm-cat');
-  const nmDate = Utils.$('#nm-date');
-  const nmTitle = Utils.$('#nm-title');
-  const nmBody = Utils.$('#nm-body');
+  var nmImg = document.getElementById('nm-img');
+  var nmCat = document.getElementById('nm-cat');
+  var nmDate = document.getElementById('nm-date');
+  var nmTitle = document.getElementById('nm-title');
+  var nmBody = document.getElementById('nm-body');
 
-  function open(id) {
-    const n = NEWS_DATA.find(x => x.id === id);
+  function openNews(id) {
+    var n = NEWS_DATA.filter(function(x){return x.id===id;})[0];
     if (!n) return;
     nmImg.src = n.img; nmImg.alt = n.title;
     nmCat.textContent = n.cat;
@@ -4333,49 +3993,29 @@ const NewsModal = (() => {
     document.body.classList.add('no-scroll');
     modal.querySelector('.news-modal__panel').scrollTop = 0;
   }
-  function close() {
+  function closeNews() {
     modal.classList.remove('is-open');
     document.body.classList.remove('no-scroll');
   }
-  Utils.on(Utils.$('#nm-close'), 'click', close);
-  Utils.on(Utils.$('#nm-backdrop'), 'click', close);
-  Utils.on(Utils.$('#nm-cta'), 'click', () => { close(); Views.goContact(); });
-  document.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  document.getElementById('nm-close').addEventListener('click', closeNews);
+  document.getElementById('nm-backdrop').addEventListener('click', closeNews);
+  document.getElementById('nm-close2').addEventListener('click', closeNews);
+  var cta = document.getElementById('nm-cta');
+  if (cta) cta.addEventListener('click', function(){ closeNews(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeNews(); });
 
-  Utils.$$('.news-card__more').forEach((a, i) => {
-    a.addEventListener('click', e => { e.preventDefault(); open(NEWS_DATA[i] ? NEWS_DATA[i].id : 'n1'); });
-  });
-
-  return { open };
+  var moreLinks = document.querySelectorAll('.news-card__more');
+  for (var i=0; i<moreLinks.length; i++) {
+    (function(idx){
+      moreLinks[idx].addEventListener('click', function(e){
+        e.preventDefault();
+        openNews(NEWS_DATA[idx] ? NEWS_DATA[idx].id : 'n1');
+      });
+    })(i);
+  }
 })();
 
 </script>
-
-<!-- NEWS MODAL -->
-<div class="news-modal" id="news-modal" role="dialog" aria-label="تفاصيل الخبر">
-  <div class="news-modal__backdrop" id="nm-backdrop"></div>
-  <div class="news-modal__panel">
-    <img class="news-modal__img" id="nm-img" src="" alt=""/>
-    <button class="news-modal__close" id="nm-close" aria-label="إغلاق">
-      <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
-    </button>
-    <div class="news-modal__body">
-      <div class="news-modal__meta">
-        <span class="news-modal__cat" id="nm-cat"></span>
-        <div class="news-modal__date">
-          <svg width="12" height="12" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-          <span id="nm-date"></span>
-        </div>
-      </div>
-      <h2 class="news-modal__title" id="nm-title"></h2>
-      <div class="news-modal__content" id="nm-body"></div>
-    </div>
-    <div class="news-modal__footer">
-      <button class="btn btn--outline btn--sm" id="nm-close2" onclick="document.getElementById('news-modal').classList.remove('is-open');document.body.classList.remove('no-scroll')">إغلاق</button>
-      <button class="btn btn--primary btn--sm" id="nm-cta">تواصل معنا</button>
-    </div>
-  </div>
-</div>
 
 </body>
 </html>
