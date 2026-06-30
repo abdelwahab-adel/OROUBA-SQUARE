@@ -305,13 +305,36 @@ const Views = (() => {
   Utils.$$('.sd-breadcrumb button').forEach(b => Utils.on(b, 'click', () => nav(b.dataset.nav)));
   Utils.$$('[data-action="services"]').forEach(b => Utils.on(b, 'click', () => nav('services')));
   Utils.$$('[data-action="contact"]').forEach(b => Utils.on(b, 'click', goContact));
-  Utils.$$('[data-action="brochure"]').forEach(b => Utils.on(b, 'click', () => { show('home'); setTimeout(() => scrl('brochure'), 200); }));
   Utils.on(Utils.$('#go-home'), 'click', () => nav('home'));
   Utils.on(Utils.$('#hdr-inq'), 'click', goContact);
   Utils.on(Utils.$('#drw-inq'), 'click', goContact);
   Utils.$$('.iq').forEach(b => Utils.on(b, 'click', goContact));
 
   return { show, nav, scrl, goContact, get current() { return current; } };
+})();
+
+/* ════════════════════════════════════════════════
+   SCROLL SPY — highlight nav link of section in view
+   ════════════════════════════════════════════════ */
+const ScrollSpy = (() => {
+  const ids = ['about', 'services', 'facilities', 'contact'];
+  const sections = ids.map(id => Utils.$('#' + id)).filter(Boolean);
+  if (!sections.length || !('IntersectionObserver' in window)) return;
+  const navBtns = Utils.$$('.nav__item[data-nav]');
+  const drawerBtns = Utils.$$('.drawer__nav-item[data-nav]');
+  function setActive(id) {
+    if (Views.current !== 'home') return;
+    navBtns.forEach(b => b.classList.toggle('is-active', b.dataset.nav === id));
+    drawerBtns.forEach(b => b.classList.toggle('is-active', b.dataset.nav === id));
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(en => { if (en.isIntersecting) setActive(en.target.id); });
+  }, { rootMargin: '-40% 0px -55% 0px', threshold: 0 });
+  sections.forEach(s => io.observe(s));
+  const firstTop = () => sections[0].getBoundingClientRect().top + window.scrollY;
+  Utils.on(window, 'scroll', () => {
+    if (Views.current === 'home' && window.scrollY < firstTop() - 120) setActive('home');
+  }, { passive: true });
 })();
 
 /* ════════════════════════════════════════════════

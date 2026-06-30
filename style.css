@@ -714,7 +714,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
 }
 .project-card:hover .project-card__body { transform: translateY(0); }
 .project-card__type { font-size: 11px; color: var(--c-gold-light); letter-spacing: 0.18em; text-transform: uppercase; font-weight: 700; margin-bottom: var(--s-2); }
-.project-card__title { font-family: var(--f-tajawal); font-size: 22px; font-weight: 800; margin-bottom: var(--s-2); }
+.project-card__title { color: white; font-family: var(--f-tajawal); font-size: 22px; font-weight: 800; margin-bottom: var(--s-2); }
 .project-card__desc { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.7; margin-bottom: var(--s-4); }
 .project-card__meta { display: flex; gap: var(--s-4); font-size: 11px; color: rgba(255,255,255,0.7); padding-top: var(--s-4); border-top: 1px solid rgba(255,255,255,0.15); opacity: 0; transform: translateY(10px); transition: all var(--t-slow) var(--ease-out) 0.1s; }
 .project-card:hover .project-card__meta { opacity: 1; transform: translateY(0); }
