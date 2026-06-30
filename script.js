@@ -363,9 +363,7 @@ const ServicesGrid = (() => {
       <div class="svc-card__image">
         <img src="${s.img}" alt="${s.title}" data-fallback="${s.fallback}" loading="lazy"/>
         <div class="svc-card__image-overlay"></div>
-        <div class="svc-card__icon">
-          <svg width="24" height="24" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="${SRV_ICONS[s.id] || SRV_ICONS.security}"/></svg>
-        </div>
+        
       </div>
       <div class="svc-card__body">
         <h3 class="svc-card__title">${s.title}</h3>
