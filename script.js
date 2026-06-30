@@ -504,7 +504,15 @@ const UnitsView = (() => {
     Utils.$$('#uacc .iq').forEach(b => Utils.on(b, 'click', Views.goContact));
   }
 
-  return { render: function() { renderBtns(); renderProfile(); renderAcc(); expandedUnit = 'unit-k1'; } };
+  return {
+    render: function() { renderBtns(); renderProfile(); renderAcc(); expandedUnit = 'unit-k1'; },
+    selectBuilding: function(id) {
+      const b = BLDS.find(x => x.id === id); if (!b) return;
+      selectedBld = id;
+      expandedUnit = b.units[0] ? b.units[0].id : null;
+      renderBtns(); renderProfile(); renderAcc();
+    }
+  };
 })();
 
 /* ════════════════════════════════════════════════
@@ -864,3 +872,237 @@ const NEWS_DATA = [
   }
 })();
 
+
+/* ════════════════════════════════════════════════
+   MASTER PLAN — interactive zoom/pan map + tower modal
+   ════════════════════════════════════════════════ */
+const TOWERS = [
+  { id:'building-k', number:'A-01', status:'done',     statusLabel:'مكتمل',         completion:100, sold:92, floors:12, units:96,  elevators:4, delivery:'2024', areas:'143 - 320 م²', types:'3-5 غرف، بنتهاوس', remaining:8,  priceFrom:'4,200,000 جنيه' },
+  { id:'building-t', number:'A-02', status:'done',     statusLabel:'مكتمل',         completion:100, sold:88, floors:14, units:112, elevators:5, delivery:'2024', areas:'135 - 168 م²', types:'3 غرف',            remaining:14, priceFrom:'3,950,000 جنيه' },
+  { id:'building-s', number:'B-01', status:'progress', statusLabel:'قيد الإنشاء',   completion:72,  sold:58, floors:10, units:80,  elevators:3, delivery:'2025', areas:'150 - 180 م²', types:'3-4 غرف',          remaining:34, priceFrom:'3,600,000 جنيه' },
+  { id:'building-n', number:'B-02', status:'progress', statusLabel:'قيد الإنشاء',   completion:55,  sold:41, floors:11, units:88,  elevators:3, delivery:'2025', areas:'140 - 165 م²', types:'3 غرف',            remaining:52, priceFrom:'3,750,000 جنيه' },
+  { id:'building-h', number:'B-03', status:'progress', statusLabel:'قيد الإنشاء',   completion:38,  sold:24, floors:9,  units:72,  elevators:2, delivery:'2026', areas:'148 - 170 م²', types:'3 غرف',            remaining:55, priceFrom:'3,500,000 جنيه' },
+  { id:'building-u', number:'C-01', status:'soon',     statusLabel:'قريباً',        completion:10,  sold:0,  floors:8,  units:64,  elevators:2, delivery:'2026', areas:'138 - 160 م²', types:'3 غرف',            remaining:64, priceFrom:'3,300,000 جنيه' },
+  { id:'building-z', number:'C-02', status:'soon',     statusLabel:'قريباً',        completion:5,   sold:0,  floors:6,  units:36,  elevators:2, delivery:'2027', areas:'210 - 320 م²', types:'بنتهاوس فاخر',     remaining:36, priceFrom:'6,800,000 جنيه' }
+];
+
+const MasterPlan = (() => {
+  const frame = Utils.$('#mp-frame');
+  if (!frame) return;
+  const stage = Utils.$('#mp-stage');
+  const hotspots = Utils.$$('#mp-hotspots .hotspot');
+  const hint = Utils.$('#mp-hint');
+
+  let scale = 1, x = 0, y = 0;
+  const MIN = 1, MAX = 3.2;
+  let dragging = false, dragStartX = 0, dragStartY = 0, originX = 0, originY = 0;
+  let pinchStartDist = 0, pinchStartScale = 1;
+
+  function apply(animated) {
+    stage.style.transition = animated ? '' : 'none';
+    stage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+  }
+
+  function clamp() {
+    const max = (scale - 1) * (frame.clientWidth / 2) + 1;
+    const maxY = (scale - 1) * (frame.clientHeight / 2) + 1;
+    x = Math.max(-max, Math.min(max, x));
+    y = Math.max(-maxY, Math.min(maxY, y));
+  }
+
+  function zoomBy(delta, animated) {
+    scale = Math.max(MIN, Math.min(MAX, scale + delta));
+    if (scale === MIN) { x = 0; y = 0; }
+    clamp();
+    apply(animated !== false);
+  }
+
+  function reset() { scale = 1; x = 0; y = 0; apply(true); }
+
+  function focusPoint(rightPct, topPct, targetScale) {
+    scale = targetScale;
+    const fw = frame.clientWidth, fh = frame.clientHeight;
+    const px = fw * (1 - rightPct / 100);
+    const py = fh * (topPct / 100);
+    x = (fw / 2 - px) * scale / 1;
+    y = (fh / 2 - py) * scale / 1;
+    clamp();
+    apply(true);
+  }
+
+  // Toolbar controls
+  Utils.on(Utils.$('#mp-zoom-in'), 'click', () => zoomBy(0.5));
+  Utils.on(Utils.$('#mp-zoom-out'), 'click', () => zoomBy(-0.5));
+  Utils.on(Utils.$('#mp-reset'), 'click', reset);
+
+  // Wheel zoom
+  Utils.on(frame, 'wheel', (e) => {
+    e.preventDefault();
+    zoomBy(e.deltaY < 0 ? 0.25 : -0.25, false);
+  }, { passive: false });
+
+  // Mouse drag pan
+  Utils.on(frame, 'mousedown', (e) => {
+    if (scale <= 1) return;
+    dragging = true; frame.classList.add('is-dragging');
+    dragStartX = e.clientX; dragStartY = e.clientY; originX = x; originY = y;
+  });
+  Utils.on(window, 'mousemove', (e) => {
+    if (!dragging) return;
+    x = originX + (e.clientX - dragStartX);
+    y = originY + (e.clientY - dragStartY);
+    clamp(); apply(false);
+  });
+  Utils.on(window, 'mouseup', () => { dragging = false; frame.classList.remove('is-dragging'); });
+
+  // Touch pan + pinch zoom
+  Utils.on(frame, 'touchstart', (e) => {
+    if (hint) hint.style.opacity = '0';
+    if (e.touches.length === 1 && scale > 1) {
+      dragging = true;
+      dragStartX = e.touches[0].clientX; dragStartY = e.touches[0].clientY;
+      originX = x; originY = y;
+    } else if (e.touches.length === 2) {
+      dragging = false;
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      pinchStartDist = Math.hypot(dx, dy);
+      pinchStartScale = scale;
+    }
+  }, { passive: true });
+  Utils.on(frame, 'touchmove', (e) => {
+    if (e.touches.length === 1 && dragging) {
+      x = originX + (e.touches[0].clientX - dragStartX);
+      y = originY + (e.touches[0].clientY - dragStartY);
+      clamp(); apply(false);
+    } else if (e.touches.length === 2) {
+      const dx = e.touches[0].clientX - e.touches[1].clientX;
+      const dy = e.touches[0].clientY - e.touches[1].clientY;
+      const dist = Math.hypot(dx, dy);
+      scale = Math.max(MIN, Math.min(MAX, pinchStartScale * (dist / pinchStartDist)));
+      if (scale === MIN) { x = 0; y = 0; }
+      clamp(); apply(false);
+    }
+  }, { passive: true });
+  Utils.on(frame, 'touchend', () => { dragging = false; });
+
+  // Status-tint the hotspots from TOWERS data (single source of truth)
+  hotspots.forEach(h => {
+    const t = TOWERS.find(tw => tw.id === h.dataset.tower);
+    if (t) h.classList.add('hotspot--' + t.status);
+  });
+
+  return { zoomBy, reset, focusPoint, hotspots };
+})();
+
+const TowerModal = (() => {
+  const modal = Utils.$('#tower-modal');
+  if (!modal) return;
+  const els = {
+    status: Utils.$('#tm-status'), number: Utils.$('#tm-number'), name: Utils.$('#tm-name'),
+    desc: Utils.$('#tm-desc'), stats: Utils.$('#tm-stats'),
+    completionVal: Utils.$('#tm-completion-val'), completionBar: Utils.$('#tm-completion-bar'),
+    soldVal: Utils.$('#tm-sold-val'), soldBar: Utils.$('#tm-sold-bar'),
+    view: Utils.$('#tm-view'), brochure: Utils.$('#tm-brochure'), visit: Utils.$('#tm-visit'), contact: Utils.$('#tm-contact')
+  };
+  let activeTower = null, activeHotspot = null;
+
+  function statClass(status) { return status === 'done' ? 'tower-modal__status--done' : status === 'progress' ? 'tower-modal__status--progress' : 'tower-modal__status--soon'; }
+
+  function open(towerId, triggerEl) {
+    const t = TOWERS.find(x => x.id === towerId); if (!t) return;
+    const b = (typeof BLDS !== 'undefined') ? BLDS.find(x => x.id === towerId) : null;
+    activeTower = t; activeHotspot = triggerEl;
+
+    if (activeHotspot) {
+      Utils.$$('#mp-hotspots .hotspot').forEach(h => h.classList.remove('is-active'));
+      activeHotspot.classList.add('is-active');
+      activeHotspot.setAttribute('aria-expanded', 'true');
+      if (MasterPlan) {
+        const right = parseFloat(activeHotspot.style.right);
+        const top = parseFloat(activeHotspot.style.top);
+        MasterPlan.focusPoint(right, top, 1.8);
+      }
+    }
+
+    els.status.textContent = t.statusLabel;
+    els.status.className = 'tower-modal__status ' + statClass(t.status);
+    els.number.textContent = t.number;
+    els.name.textContent = b ? b.nm : t.id;
+    els.desc.textContent = b ? b.de : '';
+
+    const stats = [
+      { l: 'عدد الأدوار', v: t.floors }, { l: 'عدد الوحدات', v: t.units },
+      { l: 'عدد المصاعد', v: t.elevators }, { l: 'سنة التسليم', v: t.delivery },
+      { l: 'المساحات المتوفرة', v: t.areas }, { l: 'أنواع الوحدات', v: t.types },
+      { l: 'الوحدات المتبقية', v: t.remaining }, { l: 'السعر يبدأ من', v: t.priceFrom }
+    ];
+    els.stats.innerHTML = stats.map(s => `<div class="tm-stat"><span class="tm-stat__label">${s.l}</span><span class="tm-stat__value">${s.v}</span></div>`).join('');
+
+    els.completionVal.textContent = t.completion + '%';
+    els.soldVal.textContent = t.sold + '%';
+    els.completionBar.style.width = '0%';
+    els.soldBar.style.width = '0%';
+
+    modal.classList.add('is-open');
+    document.body.classList.add('no-scroll');
+    requestAnimationFrame(() => {
+      els.completionBar.style.width = t.completion + '%';
+      els.soldBar.style.width = t.sold + '%';
+    });
+    setTimeout(() => els.view.focus(), 350);
+  }
+
+  function close() {
+    modal.classList.remove('is-open');
+    document.body.classList.remove('no-scroll');
+    if (activeHotspot) { activeHotspot.classList.remove('is-active'); activeHotspot.setAttribute('aria-expanded', 'false'); }
+    if (MasterPlan) MasterPlan.reset();
+    if (activeHotspot) activeHotspot.focus();
+    activeTower = null; activeHotspot = null;
+  }
+
+  if (MasterPlan && MasterPlan.hotspots) {
+    MasterPlan.hotspots.forEach(h => Utils.on(h, 'click', () => open(h.dataset.tower, h)));
+  }
+  Utils.on(Utils.$('#tm-close'), 'click', close);
+  Utils.on(Utils.$('#tm-backdrop'), 'click', close);
+  Utils.on(document, 'keydown', (e) => { if (e.key === 'Escape' && modal.classList.contains('is-open')) close(); });
+
+  Utils.on(els.view, 'click', () => {
+    if (!activeTower) return;
+    close();
+    if (typeof UnitsView !== 'undefined' && UnitsView.selectBuilding) UnitsView.selectBuilding(activeTower.id);
+    Views.show('units');
+  });
+  Utils.on(els.brochure, 'click', () => {
+    if (!activeTower) return;
+    const nm = els.name.textContent;
+    els.brochure.disabled = true;
+    const original = els.brochure.textContent;
+    els.brochure.textContent = 'جاري التحميل...';
+    setTimeout(() => {
+      els.brochure.disabled = false;
+      els.brochure.textContent = original;
+      alert('تم بدء تحميل بروشور: ' + nm + ' بنجاح.');
+    }, 1100);
+  });
+  Utils.on(els.visit, 'click', () => {
+    if (!activeTower) return;
+    const nm = els.name.textContent;
+    const msg = Utils.$('#fm');
+    if (msg) msg.value = 'أرغب في حجز معاينة لـ ' + nm + '.';
+    close();
+    Views.goContact();
+  });
+  Utils.on(els.contact, 'click', () => {
+    if (!activeTower) return;
+    const nm = els.name.textContent;
+    const msg = Utils.$('#fm');
+    if (msg) msg.value = 'أرغب في التواصل مع فريق المبيعات بخصوص ' + nm + '.';
+    close();
+    Views.goContact();
+  });
+
+  return { open, close };
+})();
