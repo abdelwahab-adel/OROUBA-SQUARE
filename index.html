@@ -92,8 +92,25 @@
 
 <!-- rest of the original content unchanged... -->
 
+<!-- JOKE WIDGET -->
+<section class="section joke-section" aria-label="Random Joke">
+  <div class="container">
+    <div class="joke-card" id="joke-card" role="region" aria-live="polite">
+      <div class="joke-card__body">
+        <div class="joke-text" id="joke-text">...</div>
+        <div class="joke-meta" id="joke-meta" aria-hidden="true"></div>
+      </div>
+      <div class="joke-card__actions">
+        <button class="btn btn--outline" id="joke-new" type="button">نكتة أخرى</button>
+        <button class="btn btn--primary" id="joke-share" type="button" aria-label="Share joke">مشاركة</button>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- Include i18n loader and main script -->
 <script src="js/i18n.js" defer></script>
 <script src="script.js" defer></script>
+<script src="js/jokes.js" defer></script>
 </body>
 </html>
