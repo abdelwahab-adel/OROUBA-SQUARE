@@ -1,0 +1,9 @@
+{
+  "site": { "title": "Orouba Square — Premium Real Estate" },
+  "brand": { "ar": "العروبة سكوير", "en": "OROUBA SQUARE" },
+  "topbar": { "phone": "01068300432", "email": "info@oroubasquare.com" },
+  "nav": { "home": "Home", "about": "About", "services": "Services", "facilities": "Facilities", "units": "Units", "contact": "Contact" },
+  "hero": { "title": "Welcome to <span class=\"hl\">Orouba Square</span>", "lead": "Experience luxury residential & commercial living designed for comfort and community." },
+  "cta": { "inquire": "Inquire about the project" },
+  "units": { "available": "Units available for reservation" }
+}

@@ -1,0 +1,9 @@
+{
+  "site": { "title": "العروبة سكوير - Orouba Square" },
+  "brand": { "ar": "العروبة سكوير", "en": "OROUBA SQUARE" },
+  "topbar": { "phone": "01068300432", "email": "info@oroubasquare.com" },
+  "nav": { "home": "الرئيسية", "about": "نبذة عنا", "services": "الخدمات", "facilities": "المرافق", "units": "الوحدات", "contact": "اتصل بنا" },
+  "hero": { "title": "مرحباً بك في <span class=\"hl\">العروبة سكوير</span>", "lead": "شاهد أرقى المجمعات السكنية والتجارية المصممة لتوفر لك ولعائلتك أسلوب حياة استثنائي." },
+  "cta": { "inquire": "استفسر عن مشروع" },
+  "units": { "available": "وحدات متاحة للحجز الآن" }
+}
