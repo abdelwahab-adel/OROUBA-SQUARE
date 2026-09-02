@@ -253,6 +253,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
   padding: var(--s-2) var(--s-4); background: var(--c-primary-soft); color: var(--c-primary);
   font-size: 12px; font-weight: 700; border-radius: var(--r-pill);
   letter-spacing: 0.02em;
+  display:none;
 }
 .eyebrow--gold { background: var(--c-gold-soft); color: var(--c-gold-dark); }
 .eyebrow--dark { background: rgba(255,255,255,0.1); color: #fff; backdrop-filter: blur(10px); }
@@ -1258,7 +1259,7 @@ hr { border: 0; border-top: 1px solid var(--c-border); }
 .sd-other-item { display: flex; align-items: center; gap: var(--s-2); padding: var(--s-3) var(--s-3); border-radius: var(--r-sm); font-size: 13px; color: var(--c-text-2); cursor: pointer; transition: all var(--t-fast); border: none; background: none; text-align: right; width: 100%; font-family: var(--f-cairo); }
 .sd-other-item:hover { background: var(--c-primary-soft); color: var(--c-primary); padding-right: var(--s-4); }
 .sd-cta-card { background: var(--g-primary); border-radius: var(--r-lg); padding: var(--s-8); color: #fff; }
-.sd-cta-card h4 { font-family: var(--f-tajawal); font-size: 18px; font-weight: 800; margin-bottom: var(--s-3); }
+.sd-cta-card h4 { color: white; font-family: var(--f-tajawal); font-size: 18px; font-weight: 800; margin-bottom: var(--s-3); }
 .sd-cta-card p { font-size: 13px; color: rgba(255,255,255,0.85); line-height: 1.75; margin-bottom: var(--s-5); }
 
 /* ════════════════════════════════════════════════
